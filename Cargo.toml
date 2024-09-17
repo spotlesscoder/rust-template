@@ -1,0 +1,10 @@
+[package]
+name = "rust_template"
+version = "0.1.0"
+authors = ["spotlesscoder <codingspiderfox@gmail.com>"]
+edition = "2021"
+
+[lib]
+path ="./src/lib/lib.rs"
+
+[dependencies]

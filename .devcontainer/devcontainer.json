@@ -1,0 +1,28 @@
+{
+    "name": "rust-template",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "devcontainer",
+    "workspaceFolder": "/workspace",
+    "shutdownAction": "stopCompose",
+    "customizations": {
+        "vscode": {
+            "settings": {},
+            "extensions": [
+                "dustypomerleau.rust-syntax",
+                "eamodio.gitlens",
+                "esbenp.prettier-vscode",
+                "github.vscode-github-actions",
+                "GitHub.vscode-pull-request-github",
+                "njpwerner.autodocstring",
+                "oderwat.indent-rainbow",
+                "rust-lang.rust-analyzer",
+                "serayuzgur.crates",
+                "SonarSource.sonarlint-vscode",
+                "streetsidesoftware.code-spell-checker-german",
+                "streetsidesoftware.code-spell-checker",
+                "tamasfe.even-better-toml"
+            ]
+        }
+    },
+    "postCreateCommand": ".devcontainer/postCreateCommand.sh"
+}

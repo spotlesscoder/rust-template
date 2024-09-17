@@ -1,0 +1,9 @@
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/rust:1-1-bullseye
+    command: sleep infinity
+    volumes:
+      - ..:/workspace:cached
+    ports:
+      # for CodeGPT vscode plugin
+      - "54112:54112"

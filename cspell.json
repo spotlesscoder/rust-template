@@ -1,0 +1,17 @@
+{
+    "dictionaries": ["en", "de"],
+    "ignorePaths": ["node_modules/**", "build/**", "dist/**", "target/**"],
+    "language": "en",
+    "version": "0.2",
+    "words": [
+        "APPL",
+        "Clippy",
+        "dustypomerleau",
+        "MIRI",
+        "njpwerner",
+        "oderwat",
+        "serayuzgur",
+        "tamasfe",
+        "Trackpad"
+    ]
+}

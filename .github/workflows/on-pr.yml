@@ -1,0 +1,78 @@
+name: Pull Request
+
+on:
+    pull_request:
+        branches:
+            - main
+            - "releases/*"
+
+# Cancel in-progress workflow runs if a newer run for the same PR is triggered
+concurrency:
+    group: ${{ github.workflow }}-${{ github.head_ref }}
+    cancel-in-progress: true
+
+jobs:
+    code-quality:
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: true
+
+        steps:
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "22"
+
+            - name: Install commitlint and conventional config
+              run: |
+                  npm install -g @commitlint/cli @commitlint/config-conventional
+
+            - name: Commitlint check for commits
+              run: |
+                  git fetch origin main
+                  git log origin/main..HEAD --pretty=format:%H | xargs -I {} sh -c 'git show --quiet --format=%B {} | commitlint'
+
+            - name: Format check
+              run: cargo fmt -- --check
+
+            - name: Install cspell
+              run: |
+                  npm install -g cspell@8.14.3
+                  npm install -g cspell-dict-de
+
+            - name: Run cspell
+              run: cspell "**/*" --config cspell.json --quiet
+
+    build:
+        name: Build and Test
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: true
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Set up Rust
+              uses: actions/setup-rust@v1
+              with:
+                  rust-version: stable
+
+            - name: Run Clippy
+              run: cargo clippy -- -D warnings
+
+            - name: Cache Cargo registry
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cargo/registry
+                      ~/.cargo/git
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-cargo-
+
+            - name: Build
+              run: cargo build --release
+
+            - name: Run tests
+              run: cargo test --verbose
