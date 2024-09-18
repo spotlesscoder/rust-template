@@ -1,0 +1,35 @@
+name: Pull Request
+
+on:
+    push:
+        branches:
+            - main
+            - "releases/*"
+
+# Cancel in-progress workflow runs if a newer run for the same PR is triggered
+concurrency:
+    group: ${{ github.workflow }}-${{ github.head_ref }}
+    cancel-in-progress: true
+
+jobs:
+    code-quality:
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: true
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  depth: 0
+
+            - name: Install rust toolchain
+              uses: dtolnay/rust-toolchain@master
+              with:
+                toolchain: stable
+                components: rustfmt, clippy
+
+            - name: Run tests with coverage
+              run: |
+                cargo install cargo-tarpaulin
+                cargo tarpaulin --verbose
