@@ -1,4 +1,4 @@
-name: Pull Request
+name: On Push
 
 on:
     push:
@@ -32,4 +32,4 @@ jobs:
             - name: Run tests with coverage
               run: |
                 cargo install cargo-tarpaulin
-                cargo tarpaulin --verbose
+                cargo tarpaulin
