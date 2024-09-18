@@ -24,6 +24,7 @@
     "explorer.confirmDragAndDrop": false,
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
     "files.trimTrailingWhitespaceInRegexAndStrings": true,
     "lldb.verboseLogging": true,
     "search.exclude": {

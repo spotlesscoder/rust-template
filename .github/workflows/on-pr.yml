@@ -43,7 +43,7 @@ jobs:
             - name: Install cspell
               run: |
                   npm install -g cspell@8.14.3
-                  npm install -g cspell-dict-de
+                  npm install -g @cspell/dict-de-de
 
             - name: Run cspell
               run: cspell "**/*" --config cspell.json --quiet
@@ -58,13 +58,17 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v3
 
-            - uses: dtolnay/rust-toolchain
+            - name: Install rust toolchain
+              uses: dtolnay/rust-toolchain@master
               with:
                 toolchain: stable
-                components: rustfmt,clippy
+                components: rustfmt, clippy
 
             - name: Run Clippy
-              run: cargo clippy -- -D warnings
+              run: cargo clippy --all-targets --all -- --allow=unknown-lints --deny=warnings
+
+            - name: Cargo audit
+              run: cargo install cargo-audit && cargo audit
 
             - name: Cache Cargo registry
               uses: actions/cache@v3
@@ -79,5 +83,7 @@ jobs:
             - name: Build
               run: cargo build --release
 
-            - name: Run tests
-              run: cargo test --verbose
+            - name: Run tests with coverage
+              run: |
+                cargo install cargo-tarpaulin
+                cargo tarpaulin --verbose
