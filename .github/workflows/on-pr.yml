@@ -38,7 +38,7 @@ jobs:
                   git log origin/main..HEAD --pretty=format:%H | xargs -I {} sh -c 'git show --quiet --format=%B {} | commitlint'
 
             - name: Format check
-              run: cargo fmt -- --check
+              run: cargo fmt -- --all --check
 
             - name: Install cspell
               run: |
